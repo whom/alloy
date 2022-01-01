@@ -1,0 +1,11 @@
+<div class="row">
+  <form action="/api/" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+  </form>
+</div>
+
+<div class="row"> 
+    {{ api_response }}
+</div>
