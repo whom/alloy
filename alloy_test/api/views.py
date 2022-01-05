@@ -8,7 +8,7 @@ URL = "https://sandbox.alloy.co/v1/evaluations"
 
 OUTCOME_TO_TEXT = {
   "Approved": "Success! \U0001F389\U0001F389\U0001F389",
-  "Deny": "Sorry, your application was not successful",
+  "Denied": "Sorry, your application was not successful",
   "Manual Review": "Thanks for submitting your application, we’ll be in touch shortly"
 }
 
@@ -34,25 +34,19 @@ def index(request):
           "address_postal_code": form.cleaned_data["zip_code"],
           "address_country_code": form.cleaned_data["country"],
         }
-        auth_token = ""
+        workflow_token = ""
+        workflow_secret = ""
 
-        # response = requests.post(
-        #     url=URL,
-        #     headers=headers,
-        #     json=data,
-        #     auth=auth_token
-        # )
-
-        response = {
-          "summary": {
-            "outcome": "Deny"
-          }
-        }
+        response = requests.post(
+            url=URL,
+            headers=headers,
+            json=data,
+            auth=(workflow_token, workflow_secret)
+        ).json()
 
         if response:
           api_outcome = response["summary"]["outcome"]
           api_response = OUTCOME_TO_TEXT[api_outcome]
-          print(api_response)
         else:
           api_response = "Oops! Something went wrong."
 

@@ -43,6 +43,14 @@ def validate_state(v):
       params={'value': v},
     )
 
+def validate_ssn(v):
+  if len(v) != 9 or not v.isnumeric():
+    raise ValidationError(
+      _(f"SSN must be 9 numeric characters!"),
+      params={'value': v},
+    )
+
+
 class SignupForm(models.Model):
   first_name = models.TextField(max_length=128)
   last_name = models.TextField(max_length=128)
@@ -54,7 +62,7 @@ class SignupForm(models.Model):
   zip_code = models.TextField(max_length=5, validators=[validate_zip_code])
   country = models.TextField(max_length=128, validators=[validate_country])
 
-  ssn = models.TextField(max_length=9)
+  ssn = models.TextField(max_length=9, validators=[validate_ssn])
   email_address = models.TextField(max_length=128)
   phone_number = models.TextField(max_length=10)
   dob = models.TextField(max_length=10, validators=[validate_dob])
